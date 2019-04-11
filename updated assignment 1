@@ -1,0 +1,176 @@
+
+#include <iostream>
+#define _CRT_SECURE_NO_WARNINGS
+#include <algorithm>
+# include <fstream>
+#include <string>
+#include <sstream>
+#include <iomanip>
+#include <cstring>
+using namespace std;
+struct Person {
+	char Name[20];
+	float Balance;
+};
+Person * readData(int & N)
+{
+	Person *newPerson;
+	newPerson = new Person[20];
+	string Name;
+	string SName;
+	string fullName;
+	ifstream PERSONfile;
+	string line;
+	int i = 0;
+	PERSONfile.open("Text.txt");
+
+	while (!PERSONfile.eof())
+
+
+
+	{
+
+		PERSONfile >> Name >> SName;
+		PERSONfile >> newPerson[i].Balance;
+		cout << Name << " " << SName << " " << newPerson[i].Balance << endl;
+
+		string foo = Name + " " + SName;
+		strcpy_s(newPerson[i].Name, foo.c_str());
+		i++;
+		N++;
+
+
+	}
+
+
+	PERSONfile.close();
+	return newPerson;
+}
+void NewCopy(string file, Person a[], int N) {
+	int i;
+	ofstream Wfile;
+
+	Wfile.open(file);
+	if (Wfile.is_open()) {
+
+
+
+		for (i = 0; i < N; i++) {
+
+
+
+			Wfile << a[i].Name << " " << a[i].Balance << endl;
+		}
+		Wfile.close();
+		cout << "File updated:" << endl;
+	}
+}
+
+void Dep(string CustName, Person a[], int N) {
+	string Name;
+	float depAmount = 0.0;
+	string fullName;
+	int index = 0;
+	cout << CustName << "How much you want to deposit: " << endl;
+	cin >> depAmount;
+	for (int i = 0; i < N; i++) {
+		if (a[i].Name == CustName) {
+			index = i;
+
+
+
+			a[index].Balance = depAmount + a[index].Balance;
+			cout << " The New Balance: " << fixed << setprecision(2) << a[index].Balance << endl;
+			NewCopy("Text.txt", a, N);
+		}
+		else if (index == N)
+		{
+			cout << "Record not Found..." << endl;
+		}
+
+
+	}
+}
+void FindRichest(Person a[], int N)
+{
+
+
+	cout << "___________________________________" << endl;
+	double Richest = 0;
+	string money;
+	for (int i = 0; i < N; i++)
+	{
+
+
+		if (a[i].Balance > Richest)
+		{
+			Richest = a[i].Balance;
+			money = a[i].Name;
+		}
+
+
+	}
+	cout << "The Customer With Highest Balance is: " << money << " " << fixed << setprecision(2) << Richest << endl;
+
+}
+void Display(Person a[], int N) {
+	for (int i = 0; i < N; i++)
+
+
+
+	{
+		cout << a[i].Name << " " << a[i].Balance << endl;
+
+
+	}
+
+
+
+}
+
+int main() {
+	int N = 0;
+	string Name;
+	string SName;
+	//float Aamount;
+	string CName;
+	int choice;
+	Person *PPerson = NULL;
+	PPerson = readData(N);
+
+
+	do
+	{
+		cout << "________________________________" << endl;
+		cout << "Please Choose 1 to 5:" << endl;
+
+		cout << "1- TO Display: " << endl;
+		cout << "2- Deposit to Account: " << endl;
+		cout << "3- Find the Richest: " << endl;
+		cout << "4- Update records: " << endl;
+		cout << "5- TO exit: " << endl;
+		cin >> choice;
+		switch (choice) {
+		case 1:
+			Display(PPerson, N);
+			break;
+		case 2:
+			cout << " Enter First and Last Name to deposit:" << endl;
+			cin.ignore();
+			getline(cin, CName);
+			Dep(CName, PPerson, N);
+			break;
+		case 3:
+			FindRichest(PPerson, N);
+			cout << "__________________________";
+			break;
+		case 4:
+			NewCopy("Text.txt", PPerson, N);
+			break;
+
+
+
+		}
+	} while (choice != 5);
+	return 0;
+}
