@@ -35,10 +35,10 @@ Person * readData(int & N)
 		PERSONfile >> newPerson[i].Balance;
 		cout << Name << " " << SName << " " << newPerson[i].Balance << endl;
 
-		string foo = Name + " " + SName;
+		string foo = Name.substr(0,8) + " " + SName.substr(0,9);
 		strcpy_s(newPerson[i].Name, foo.c_str());
 		i++;
-		N++;
+		N++
 
 
 	}
